@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Mapa Mental - Arquitetura IMM</title>
+<style>
+  body {
+    background-color: #0d1117; /* Fundo escuro */
+    color: #e5e7eb;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 40px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  /* Estrutura base das listas */
+  ul {
+    padding-left: 40px;
+    list-style: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Linha horizontal conectando o nó pai à sub-lista */
+  ul ul::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 20px;
+    height: 2px;
+    background-color: #4b5563;
+  }
+
+  li {
+    position: relative;
+    padding: 10px 0 10px 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Linha vertical conectando os nós irmãos */
+  li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: #4b5563;
+  }
+
+  /* Ajustes de borda para o primeiro e último filho */
+  li:first-child::before {
+    top: 50%;
+  }
+  li:last-child::before {
+    bottom: 50%;
+  }
+
+  /* Linha horizontal final tocando a caixa */
+  li::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 40px;
+    height: 2px;
+    background-color: #4b5563;
+  }
+
+  /* Remove linhas do nó raiz */
+  .root-ul { padding-left: 0; }
+  .root-ul > li { padding-left: 0; }
+  .root-ul > li::before, .root-ul > li::after { display: none; }
+
+  /* Estilo base das caixas */
+  .box {
+    background-color: #1f2937;
+    border: 1px solid #374151;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 1;
+    white-space: nowrap;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  }
+
+  /* Destaque verde para as folhas (último nível) */
+  .leaf {
+    background-color: #0f2e1b;
+    border-color: #166534;
+    color: #86efac;
+  }
+</style>
+</head>
+<body>
+
+<ul class="root-ul">
+  <li>
+    <div class="box">Arquitetura do Projeto IMM</div>
+    <ul>
+      
+      <li>
+        <div class="box">Camada de Compilação (Build System)</div>
+        <ul>
+          <li>
+            <div class="box">pyproject.toml</div>
+            <ul>
+              <li><div class="box leaf">Empacotamento</div></li>
+              <li><div class="box leaf">Dependências: setuptools e pybind11</div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="box">setup.py</div>
+            <ul>
+              <li><div class="box leaf">Script de Configuração e Compilação</div></li>
+              <li><div class="box leaf">Flags de otimização e paralelismo</div></li>
+              <li><div class="box leaf">Geração do artefato imm_module</div></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <div class="box">Camada de Interface (Tradutor)</div>
+        <ul>
+          <li>
+            <div class="box">bindings.cpp</div>
+            <ul>
+              <li><div class="box leaf">Conversão de tipos de dados</div></li>
+              <li><div class="box leaf">Exportação de funções: run_cplusplus e evaluate_seeds</div></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <div class="box">Motor C++ (Coração)</div>
+        <ul>
+          <li>
+            <div class="box">imm.cpp</div>
+            <ul>
+              <li><div class="box leaf">Modelos de propagação IC e LT</div></li>
+              <li><div class="box leaf">Geração paralela de RR-Sets</div></li>
+              <li><div class="box leaf">Algoritmo greedy (CELF)</div></li>
+              <li><div class="box leaf">Monte Carlo paralelo</div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="box">utils.cpp</div>
+            <ul>
+              <li><div class="box leaf">Estrutura do grafo (edge)</div></li>
+              <li><div class="box leaf">Funções auxiliares rápidas</div></li>
+              <li><div class="box leaf">Operações matemáticas otimizadas</div></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li>
+        <div class="box">Camada de Execução (Usuário Final)</div>
+        <ul>
+          <li>
+            <div class="box">exe_IMM.py</div>
+            <ul>
+              <li><div class="box leaf">Fluxo primário</div></li>
+              <li><div class="box leaf">Descoberta de sementes ótimas</div></li>
+            </ul>
+          </li>
+          <li>
+            <div class="box">bateria_testes.py</div>
+            <ul>
+              <li><div class="box leaf">Fluxo secundário usando medidas de centralidade</div></li>
+              <li><div class="box leaf">Validação via Monte Carlo paralelo</div></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+    </ul>
+  </li>
+</ul>
+
+</body>
+</html>
